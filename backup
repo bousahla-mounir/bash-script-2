@@ -1,0 +1,13 @@
+#!/bin/bash
+
+m=$(date "+%m")
+cd /var/www
+
+#tar -czf - -C /home/ahmed/snap . | ssh bmounir@192.168.100.199 "tar xzf - -C /home/bmounir/workspace/ahmed"
+
+cd $HOME
+tar -czf - snap | ssh bmounir@192.168.100.199 "cat > snap-$m.tgz"
+
+
+echo "Program termined"
+
