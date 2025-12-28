@@ -1,0 +1,29 @@
+#!/bin/bash
+
+OLD_IFS="$IFS"
+IFS=$'\n'
+PRONAME="${0##*/}"
+
+usage(){
+	echo $1 >&2
+	exit 1
+}
+
+if [[ $# == 0 ]];then
+	usage "Usage: PRONAME Filenames"
+fi
+
+for fn in $*;do
+	echo "Process $fn"
+	if [ -e "${fn%.*}.bak" ];then
+		rm -rf "${fn%.*}.bak"
+	fi
+	cp "$fn" "${fn%.*}.bak"
+	sed -f ./sedfile < "${fn%.*}.bak" > "$fn"
+done
+
+IFS="$OLD_IFS"
+
+echo "Program ended with success"
+
+
