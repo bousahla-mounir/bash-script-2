@@ -1,0 +1,13 @@
+#!/bin/bash
+
+while read username;do
+	pwd="$username-1234"
+	echo "Account: $username, Password: $pwd"
+	useradd -m -d "/home/$username" -s /bin/bash "$username"
+	echo "$username:$pwd" | chpasswd
+	chage -d 0 -E 2026-02-28 $username
+done < students.txt
+
+echo "Program ended with success"
+
+
