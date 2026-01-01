@@ -1,0 +1,22 @@
+#!/bin/bash
+
+OLD_IFS="$IFS"
+
+while IFS= read -r db;do	
+	echo "Database $db is processed "
+	mysql "$db" < creates.sql || {
+		echo "Failed on database: $db " >&2
+	}
+done < mydbs.txt
+
+IFS="$OLD_IFS"
+
+# By default: IFS=$' \t\n'
+# Which means: leading/trailing whitespace is trimmed, words are split on spaces/tabs
+# IFS=     : Leading spaces are preserved, Trailing spaces are preserved, Entire line goes into db exactly as-is
+#
+# By doing -r : Backslashes like \n \t and \ are read literally, are not treated as escape characters to avoid corrupted input.
+
+
+
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+OLD_IFS="$IFS"
+
+while IFS= read -r db;do	
+	echo "Database $db is processed "
+	mysql "$db" < updates.sql || {
+		echo "Failed on database: $db " >&2
+	}
+done < mydbs.txt
+
+IFS="$OLD_IFS"
+
+
+
