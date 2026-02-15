@@ -1,0 +1,18 @@
+# File /etc/systemd/system/docker-mysql.service
+[Unit]
+Description=starts MYSQL server as Docker container
+After=docker.service
+Requires=docker.service
+
+[Service]
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker stop mysql-container
+ExecStartPre=-/usr/bin/docker rm mysql-container
+ExecStartPre=/usr/bin/docker pull mysql:latest
+ExecStart=/usr/bin/docker run -d -p33016:3306 -v mysql-docker-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret --name mysql-container mysql:latest
+ExecStop=/usr/bin/docker stop mysql-container
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
