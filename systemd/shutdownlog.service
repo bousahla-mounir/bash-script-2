@@ -1,0 +1,13 @@
+# file /etc/systemd/system/shutdownlog.service
+
+[Unit]
+Description=Log Shutdown
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/sh -c 'echo "on: $(date)" >> /var/log/shutdownlog'
+ExecStop=/usr/bin/sh -c 'echo "off: $(date)" >> /var/log/shutdownlog'
+
+[Install]
+WantedBy=multi-user.target
